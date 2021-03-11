@@ -22,6 +22,14 @@ def task1(df):
     return df
 
 
+def count_occurences(dict, words):
+    for word in words:
+        if word in dict:
+            dict[word] = dict[word] + 1
+        else:
+            dict[word] = 0
+
+
 if __name__ == '__main__':
     df = pd.read_csv('data/text_data/Corona_NLP_train.csv', encoding='latin-1')
 
@@ -32,3 +40,29 @@ if __name__ == '__main__':
 
     total_words_count = df_converted['TokenizedTweets'].apply(lambda x: len(x)).sum()
     print('total number of words: ' + str(total_words_count))
+
+    # number of all distinct words
+    unique_words = set()
+    df_converted['TokenizedTweets'].apply(lambda x: [unique_words.add(word) for word in x])
+    print('number of unique words: ' + str(len(unique_words)))
+
+    # the 10 most frequent words in the corpus
+    dict = {}
+    df_converted['TokenizedTweets'].apply(lambda x: count_occurences(dict, x))
+
+    most_frequent_words = sorted(dict.items(), key=lambda x: x[1], reverse=True)[0:10]
+    print('the 10 most frequent words: ' + str(most_frequent_words))
+
+    # remove stop words, words with ≤ 2 characters
+    df_converted['TokenizedTweets'] = df_converted['TokenizedTweets'].apply(
+        lambda x: [word for word in x if len(word) > 2])
+
+    total_words_count = df_converted['TokenizedTweets'].apply(lambda x: len(x)).sum()
+    print('total number of words after removing stop words: ' + str(total_words_count))
+
+    # the 10 most frequent words in the corpus
+    dict = {}
+    df_converted['TokenizedTweets'].apply(lambda x: count_occurences(dict, x))
+
+    most_frequent_words = sorted(dict.items(), key=lambda x: x[1], reverse=True)[0:10]
+    print('the 10 most frequent words after removing stop words: ' + str(most_frequent_words))
