@@ -1,5 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import re
+import time
 
 
 def task1(df):
@@ -30,39 +32,55 @@ def count_occurences(dict, words):
             dict[word] = 0
 
 
-if __name__ == '__main__':
-    df = pd.read_csv('data/text_data/Corona_NLP_train.csv', encoding='latin-1')
-
-    df_converted = task1(df)
-
+def task2(df):
     # add TokenizedTweets column
-    df_converted.insert(5, 'TokenizedTweets', df_converted['OriginalTweet'].apply(lambda x: x.split()))
+    df.insert(5, 'TokenizedTweets', df['OriginalTweet'].apply(lambda x: x.split()))
 
-    total_words_count = df_converted['TokenizedTweets'].apply(lambda x: len(x)).sum()
+    total_words_count = df['TokenizedTweets'].apply(lambda x: len(x)).sum()
     print('total number of words: ' + str(total_words_count))
 
     # number of all distinct words
     unique_words = set()
-    df_converted['TokenizedTweets'].apply(lambda x: [unique_words.add(word) for word in x])
+    df['TokenizedTweets'].apply(lambda x: [unique_words.add(word) for word in x])
     print('number of unique words: ' + str(len(unique_words)))
 
     # the 10 most frequent words in the corpus
-    dict = {}
-    df_converted['TokenizedTweets'].apply(lambda x: count_occurences(dict, x))
-
-    most_frequent_words = sorted(dict.items(), key=lambda x: x[1], reverse=True)[0:10]
-    print('the 10 most frequent words: ' + str(most_frequent_words))
+    n_most_frequent_words(df, 10)
 
     # remove stop words, words with ≤ 2 characters
-    df_converted['TokenizedTweets'] = df_converted['TokenizedTweets'].apply(
+    df['TokenizedTweets'] = df['TokenizedTweets'].apply(
         lambda x: [word for word in x if len(word) > 2])
 
-    total_words_count = df_converted['TokenizedTweets'].apply(lambda x: len(x)).sum()
+    total_words_count = df['TokenizedTweets'].apply(lambda x: len(x)).sum()
     print('total number of words after removing stop words: ' + str(total_words_count))
 
     # the 10 most frequent words in the corpus
-    dict = {}
-    df_converted['TokenizedTweets'].apply(lambda x: count_occurences(dict, x))
+    dict_most_frequent_words = n_most_frequent_words(df, 10)
 
-    most_frequent_words = sorted(dict.items(), key=lambda x: x[1], reverse=True)[0:10]
-    print('the 10 most frequent words after removing stop words: ' + str(most_frequent_words))
+    return df, dict_most_frequent_words
+
+
+def n_most_frequent_words(df, n):
+    dict = {}
+    df['TokenizedTweets'].apply(lambda x: count_occurences(dict, x))
+    most_frequent_words = sorted(dict.items(), key=lambda x: x[1], reverse=True)
+    print('the 10 most frequent words: ' + str(most_frequent_words[0:n]))
+
+    return dict
+
+
+if __name__ == '__main__':
+    # start_time = time.time()
+
+    df = pd.read_csv('data/text_data/Corona_NLP_train.csv', encoding='latin-1')
+
+    df_converted = task1(df)
+
+    df_tokenized, dict_most_frequent_words = task2(df_converted)
+
+    # task 3
+    plt.plot(sorted(dict_most_frequent_words.values(), key=lambda x: x, reverse=False))
+
+    # print("--- %s seconds ---" % (time.time() - start_time))
+
+    plt.show()
