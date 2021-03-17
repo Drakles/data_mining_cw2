@@ -2,6 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 import time
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
 
 def task1(df):
@@ -69,6 +72,22 @@ def n_most_frequent_words(df, n):
     return dict
 
 
+def task3(dict):
+    plt.plot(sorted(dict.values(), key=lambda x: x, reverse=False))
+    # plt.show()
+
+
+def task4(df):
+    corpus = np.array(df['OriginalTweet'])
+    vectorizer = CountVectorizer()
+    X = vectorizer.fit_transform(corpus)
+    y = np.array(df['Sentiment'])
+    clf = MultinomialNB()
+    clf.fit(X, y)
+
+    print(clf.score(X, y))
+
+
 if __name__ == '__main__':
     # start_time = time.time()
 
@@ -79,8 +98,9 @@ if __name__ == '__main__':
     df_tokenized, dict_most_frequent_words = task2(df_converted)
 
     # task 3
-    plt.plot(sorted(dict_most_frequent_words.values(), key=lambda x: x, reverse=False))
+    task3(dict_most_frequent_words)
+
+    # task 4
+    task4(df_tokenized)
 
     # print("--- %s seconds ---" % (time.time() - start_time))
-
-    plt.show()
