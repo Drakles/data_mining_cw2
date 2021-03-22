@@ -3,6 +3,7 @@ from skimage.color import rgb2gray
 from skimage.filters import threshold_mean
 from skimage.util import random_noise
 from skimage.filters import gaussian
+from scipy import ndimage
 
 
 def task1():
@@ -17,16 +18,25 @@ def task1():
     io.imsave('outputs/black_white.jpg', black_white_avengers)
 
 
-if __name__ == '__main__':
-    # task1
-    task1()
-
-    # task 2
+def task2():
     bush_house = io.imread('data/image_data/bush_house_wikipedia.jpg')
 
     bush_house_gausian_random_noise = random_noise(bush_house, var=0.1)
     io.imsave('outputs/bh_gaussian_random_noise.jpg', bush_house_gausian_random_noise)
 
-    bush_house_filtered = gaussian(bush_house_gausian_random_noise,sigma=1)
+    bush_house_filtered = gaussian(bush_house_gausian_random_noise, sigma=1)
     io.imsave('outputs/bh_gaussian_mask_filtered.jpg', bush_house_filtered)
+
+    bush_house_smoothed = ndimage.uniform_filter(bush_house_filtered, size=9)
+    io.imsave('outputs/bh_gaussian_mask_filtered_smoothed.jpg', bush_house_smoothed)
+
+
+if __name__ == '__main__':
+    # task1
+    task1()
+
+    # task 2
+    task2()
+
+    # task 3
 

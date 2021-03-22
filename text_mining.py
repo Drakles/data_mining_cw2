@@ -22,7 +22,7 @@ def task1(df):
     # lower case
     df['OriginalTweet'] = df['OriginalTweet'].str.lower()
 
-    # replace non alhabetical characters
+    # replace non alphabetical characters
     df['OriginalTweet'] = df['OriginalTweet'].replace('[^0-9a-zA-Z]+', ' ', regex=True)
 
     # ensure that the words of a message are separated by a single whitespace
