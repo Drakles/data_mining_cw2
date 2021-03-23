@@ -78,9 +78,10 @@ def n_most_frequent_words(df, n):
 
     return dict
 
-
+# check if ok "while the vertical axis indicates the fraction of documents in a which a word appears"
 def task3(dict):
     plt.plot(sorted(dict.values(), key=lambda x: x, reverse=False))
+    plt.savefig('outputs/most_frequent.jpg')
     # plt.show()
 
 
