@@ -7,19 +7,24 @@ from sklearn.naive_bayes import MultinomialNB
 
 
 def task1(df):
+    # get all sentiments
     sentiments_column = df['Sentiment']
+    # get unique sentiment values
     possible_sentiments = set(sentiments_column)
     print('all possible sentiment values: ' + str(possible_sentiments))
 
+    # get values and number of occurences of a given value, then sort it and get second most occurring one
     second_most_popular_sent = sentiments_column.value_counts().sort_values(ascending=False).index[1]
     print('second most popular sentiment: ' + str(second_most_popular_sent))
 
+    # filter df to retrieve samples with Extremely Positive sentiment only
     df_extremely_positive = df[df['Sentiment'] == 'Extremely Positive']
+    # group by date, sort it and retrieve the most popular one
     date_with_most_extremely_positive_sent = df_extremely_positive.groupby(['TweetAt']).count().sort_values(
         ascending=False, by=['Sentiment']).index[0]
     print('date with most extremely positive sentiment: ' + str(date_with_most_extremely_positive_sent))
 
-    # lower case
+    # convert to lower case
     df['OriginalTweet'] = df['OriginalTweet'].str.lower()
 
     # replace non alphabetical characters
@@ -40,9 +45,10 @@ def count_occurrences(dict, words):
 
 
 def task2(df):
-    # add TokenizedTweets column
+    # add TokenizedTweets column and insert split words
     df.insert(5, 'TokenizedTweets', df['OriginalTweet'].str.split())
 
+    # count total number of words with repetitions
     total_words_count = df['TokenizedTweets'].str.len().sum()
     print('total number of words: ' + str(total_words_count))
 
@@ -78,11 +84,13 @@ def n_most_frequent_words(df, n):
 
     return dict
 
-# check if ok "while the vertical axis indicates the fraction of documents in a which a word appears"
-def task3(dict):
-    plt.plot(sorted(dict.values(), key=lambda x: x, reverse=False))
+
+def task3(words_frequencies_dict, df):
+    df_size = len(df)
+    mapped_dict = {k: v / df_size for (k, v) in words_frequencies_dict.items()}
+
+    plt.plot(sorted(mapped_dict.values(), key=lambda x: x, reverse=False))
     plt.savefig('outputs/most_frequent.jpg')
-    # plt.show()
 
 
 def task4(df):
@@ -99,29 +107,19 @@ def task4(df):
 
 if __name__ == '__main__':
     time_total = time.time()
-    start_time = time_total
 
     df = pd.read_csv('data/text_data/Corona_NLP_train.csv', encoding='latin-1')
-    print("reading data --- %s seconds ---" % (time.time() - start_time))
 
     # task 1
-    start_time = time.time()
     df_converted = task1(df)
-    print("task1 --- %s seconds ---" % (time.time() - start_time))
 
     # task 2
-    start_time = time.time()
     df_tokenized, dict_most_frequent_words = task2(df_converted)
-    print("task2 --- %s seconds ---" % (time.time() - start_time))
 
     # # task 3
-    start_time = time.time()
-    task3(dict_most_frequent_words)
-    print("task3 --- %s seconds ---" % (time.time() - start_time))
+    task3(dict_most_frequent_words, df_tokenized)
 
     # # task 4
-    start_time = time.time()
     task4(df_tokenized)
-    print("task4 --- %s seconds ---" % (time.time() - start_time))
 
     print("--- %s seconds ---" % (time.time() - time_total))

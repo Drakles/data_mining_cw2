@@ -55,13 +55,16 @@ def task3():
 
 def task4():
     rolland_garros = io.imread('data/image_data/rolland_garros_tv5monde.jpg')
+
     edges = feature.canny(rgb2gray(rolland_garros))
+
     lines = probabilistic_hough_line(edges)
     for line in lines:
         p0, p1 = line
         plt.plot((p0[0], p1[0]), (p0[1], p1[1]))
     plt.xlim((0, rolland_garros.shape[1]))
     plt.ylim((rolland_garros.shape[0], 0))
+
     plt.savefig('outputs/rolland_garros.jpg')
 
 
