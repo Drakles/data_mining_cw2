@@ -67,7 +67,7 @@ def task3():
     img = np.float32(img)
 
     # create KMeans
-    kmeans_cluster = cluster.KMeans(n_clusters=2)
+    kmeans_cluster = cluster.KMeans(n_clusters=5)
     # train KMeans
     kmeans_cluster.fit(img)
 
