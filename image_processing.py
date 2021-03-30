@@ -12,11 +12,6 @@ from skimage.transform import probabilistic_hough_line
 
 
 # Create the images after applying operations defined in question 1
-#
-# Parameters:
-#
-# Returns:
-#    void
 def task1():
     # load the image
     avengers = io.imread('data/image_data/avengers_imdb.jpg')
@@ -36,11 +31,6 @@ def task1():
 
 
 # Create the images after applying operations defined in question 2
-#
-# Parameters:
-#
-# Returns:
-#    void
 def task2():
     # load the image
     bush_house = io.imread('data/image_data/bush_house_wikipedia.jpg')
@@ -48,25 +38,24 @@ def task2():
     # apply gaussian random noise
     bush_house_gausian_random_noise = random_noise(bush_house, var=0.1)
     # save the image
-    io.imsave('outputs/bh_gaussian_random_noise.jpg', bush_house_gausian_random_noise)
+    io.imsave('outputs/bh_gaussian_random_noise.jpg',
+              bush_house_gausian_random_noise)
 
     # apply gaussian mask
-    bush_house_filtered = gaussian(bush_house_gausian_random_noise, sigma=1, multichannel=True)
+    bush_house_filtered = gaussian(bush_house_gausian_random_noise,
+                                   sigma=1, multichannel=True)
     # save the image
     io.imsave('outputs/bh_gaussian_mask_filtered.jpg', bush_house_filtered)
 
     # apply uniform smoothing mask
-    bush_house_smoothed = ndimage.uniform_filter(bush_house_gausian_random_noise, size=(9, 9, 1))
+    bush_house_smoothed = ndimage.\
+        uniform_filter(bush_house_gausian_random_noise, size=(9, 9, 1))
     # save the image
-    io.imsave('outputs/bh_gaussian_mask_filtered_smoothed.jpg', bush_house_smoothed)
+    io.imsave('outputs/bh_gaussian_mask_filtered_smoothed.jpg',
+              bush_house_smoothed)
 
 
 # Create the images after applying operations defined in question 3
-#
-# Parameters:
-#
-# Returns:
-#    void
 def task3():
     # load the image
     original_img = io.imread('data/image_data/forestry_commission_gov_uk.jpg')
@@ -78,7 +67,7 @@ def task3():
     img = np.float32(img)
 
     # create KMeans
-    kmeans_cluster = cluster.KMeans(n_clusters=5)
+    kmeans_cluster = cluster.KMeans(n_clusters=2)
     # train KMeans
     kmeans_cluster.fit(img)
 
@@ -91,15 +80,11 @@ def task3():
     img_clustered = cluster_centers[cluster_labels.flatten()]
 
     # save the image
-    plt.imsave('outputs/forestry_kmeans.jpg', img_clustered.reshape(original_img.shape))
+    plt.imsave('outputs/forestry_kmeans.jpg',
+               img_clustered.reshape(original_img.shape))
 
 
 # Create the images after applying operations defined in question 4
-#
-# Parameters:
-#
-# Returns:
-#    void
 def task4():
     # load the image
     rolland_garros = io.imread('data/image_data/rolland_garros_tv5monde.jpg')
