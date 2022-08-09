@@ -11,8 +11,8 @@ from skimage import feature
 from skimage.transform import probabilistic_hough_line
 
 
-# Create the images after applying operations defined in question 1
 def task1():
+    """Create the images after applying operations defined in question 1"""
     # load the image
     avengers = io.imread('data/image_data/avengers_imdb.jpg')
     print('the size of the image is: ' + str(avengers.shape))
@@ -30,8 +30,9 @@ def task1():
     io.imsave('outputs/black_white.jpg', black_white_avengers)
 
 
-# Create the images after applying operations defined in question 2
 def task2():
+    """Create the images after applying operations defined in question 2"""
+
     # load the image
     bush_house = io.imread('data/image_data/bush_house_wikipedia.jpg')
 
@@ -55,8 +56,8 @@ def task2():
               bush_house_smoothed)
 
 
-# Create the images after applying operations defined in question 3
 def task3():
+    """Create the images after applying operations defined in question 3"""
     # load the image
     original_img = io.imread('data/image_data/forestry_commission_gov_uk.jpg')
 
@@ -84,8 +85,8 @@ def task3():
                img_clustered.reshape(original_img.shape))
 
 
-# Create the images after applying operations defined in question 4
 def task4():
+    """Create the images after applying operations defined in question 4"""
     # load the image
     rolland_garros = io.imread('data/image_data/rolland_garros_tv5monde.jpg')
 

@@ -6,21 +6,23 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
 
-# Returns the dataframe after applying operations specified in question 1.
-
-# Parameters:
-#    df (Dataframe):The dataframe which is to be applied operations
-
-# Returns:
-#    The dataframe after applying operations
 def task1(df):
+    """
+    Apply operations specified in question 1.
+
+    Parameters:
+        df (Dataframe):The dataframe which is to be applied operations
+
+    Returns:
+        The dataframe after applying operations"""
+
     # get all sentiments
     sentiments_column = df['Sentiment']
     # get unique sentiment values
     possible_sentiments = set(sentiments_column)
     print('all possible sentiment values: ' + str(possible_sentiments))
 
-    # get values and number of occurences of a given value, then sort it and
+    # get values and number of occurrences of a given value, then sort it and
     # get second most occurring one
     second_most_popular_sent = sentiments_column.value_counts() \
         .sort_values(ascending=False).index[1]
@@ -48,13 +50,16 @@ def task1(df):
     return df
 
 
-# Counts number of occurrences of words.
-
-# Parameters: dict (dict): The dict which is used to store information about
-# occurrences of a given words. Each word is added to this dict as a key,
-# where value corresponds to number of occurrences words (Iterable):
-# collection of words to count
 def count_occurrences(dict, words):
+    """
+    Counts number of occurrences of words.
+
+    Parameters: dict (dict): The dict which is used to store information about
+    occurrences of a given words. Each word is added to this dict as a key,
+    where value corresponds to number of occurrences
+     words (Iterable): collection of words to count
+    """
+
     for word in words:
         if word in dict:
             dict[word] = dict[word] + 1
@@ -62,15 +67,17 @@ def count_occurrences(dict, words):
             dict[word] = 0
 
 
-# Returns the dataframe after applying operations specified in question 2 and
-# dict with most frequent words.
-
-# Parameters:
-#    df (Dataframe):The dataframe which is to be applied operations
-
-# Returns:
-#    Dataframe after applying operations and dict with most frequent words
 def task2(df):
+    """
+    Apply operations specified in question 2
+
+    Parameters:
+        df (Dataframe):The dataframe which is to be applied operations
+
+    Returns:
+        Dataframe after applying operations and dict with most frequent words
+    """
+
     # add TokenizedTweets column and insert split words
     df.insert(5, 'TokenizedTweets', df['OriginalTweet'].str.split())
 
@@ -104,17 +111,19 @@ def task2(df):
     return df, dict_most_frequent_words
 
 
-# Returns the dictionary of words frequency
-
-# Parameters: df (Dataframe): The dataframe with column TokenizedTweets for
-# which counting is applied n (int): Number of most frequent words to be
-# printed. For example n=10 will result in printing results for 10 most
-# frequent words. This is however, independent of dict that is returned,
-# which is not limited by this parameter.
-
-# Returns:
-#    dictionary of words frequency  
 def n_most_frequent_words(df, n):
+    """
+    Calculate words frequency
+
+    Parameters: df (Dataframe): The dataframe with column TokenizedTweets for
+        which counting is applied n (int): Number of most frequent words to be
+        printed. For example n=10 will result in printing results for 10 most
+        frequent words. This is however, independent of dict that is returned,
+        which is not limited by this parameter.
+
+    Returns:
+        dictionary of words frequency
+    """
     words_freq_dict = {}
     np.vectorize(count_occurrences)(words_freq_dict, df['TokenizedTweets'])
 
@@ -125,15 +134,16 @@ def n_most_frequent_words(df, n):
     return words_freq_dict
 
 
-# Create line chart of words frequency and saves it to file
-
-# Parameters: df_size (int): size of the dataframe. Equivalent of number of
-# documents in dataset for which we plot the chart words_frequencies_dict (
-# dict):
-
-# Returns:
-#    void
 def task3(words_frequencies_dict, df_size):
+    """
+    Create line chart of words frequency and saves it to file
+
+    Parameters: df_size (int): size of the dataframe. Equivalent of number of
+        documents in dataset for which we plot the chart words_frequencies_dict (dict)
+
+    Returns:
+        None
+    """
     # create new dict to obtain fraction of documents in a which a word appears
     words_fraction_appearing = {k: v / df_size for (k, v) in
                                 words_frequencies_dict.items()}
@@ -145,15 +155,17 @@ def task3(words_frequencies_dict, df_size):
     plt.savefig('outputs/most_frequent.jpg')
 
 
-# Create MultinomialNB that is to trained on dataframe and print its error rate.
-
-# Parameters: df (Dataframe): The dataframe used to training the model. Need to
-# have column 'OriginalTweet' that is used as sample data and 'Sentiment'
-# column which contains target value
-
-# Returns:
-#    void
 def task4(df):
+    """
+    Create MultinomialNB that is to trained on dataframe and print its error rate.
+
+    Parameters: df (Dataframe): The dataframe used to training the model. Need to
+        have column 'OriginalTweet' that is used as sample data and 'Sentiment'
+        column which contains target value
+
+    Returns:
+        None
+    """
     # create count vectorizer
     cv = CountVectorizer()
 
