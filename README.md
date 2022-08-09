@@ -1,4 +1,4 @@
-## Data mining coursework
+## Data mining coursework 2
 The implementation is split into two files for text mining and image processing.
 Each task from instruction is implemented as a separate function.
 So, for example, Task 4 from the text mining part is implemented in file text_mining.py in function task4.
